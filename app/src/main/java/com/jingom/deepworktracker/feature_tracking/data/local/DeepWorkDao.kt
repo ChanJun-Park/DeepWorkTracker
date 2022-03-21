@@ -19,6 +19,9 @@ interface DeepWorkDao {
 	@Insert(onConflict = OnConflictStrategy.REPLACE)
 	suspend fun insertDeepWork(deepWork: DeepWork)
 
+	@Insert(onConflict = OnConflictStrategy.REPLACE)
+	suspend fun insertDeepWorks(deepWorks: List<DeepWork>)
+
 	@Delete
 	suspend fun deleteDeepWork(deepWork: DeepWork)
 }
