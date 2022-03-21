@@ -11,7 +11,7 @@
             android:supportsRtl="true"
             android:theme="@style/Theme.DeepWorkTracker.DayNight">
         <activity
-                android:name=".MainActivity"
+                android:name=".feature_tracking.presentation.MainActivity"
                 android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

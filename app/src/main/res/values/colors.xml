@@ -7,4 +7,12 @@
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+
+    <color name="deepwork_gray_50">#FFF6F6F6</color>
+    <color name="deepwork_gray_100">#FFE9E9E9</color>
+    <color name="deepwork_gray_500">#FF262626</color>
+    <color name="deepwork_gray_700">#FF171717</color>
+    <color name="deepwork_gray_900">#FF010101</color>
+    <color name="deepwork_white">#FFFCFCFC</color>
+
 </resources>
