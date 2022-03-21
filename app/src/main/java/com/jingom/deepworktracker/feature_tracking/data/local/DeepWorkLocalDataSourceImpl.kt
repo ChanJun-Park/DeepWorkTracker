@@ -2,6 +2,7 @@ package com.jingom.deepworktracker.feature_tracking.data.local
 
 import com.jingom.deepworktracker.feature_tracking.domain.model.DeepWork
 import kotlinx.coroutines.flow.Flow
+import java.time.LocalDateTime
 import javax.inject.Inject
 
 class DeepWorkLocalDataSourceImpl @Inject constructor(
@@ -9,6 +10,10 @@ class DeepWorkLocalDataSourceImpl @Inject constructor(
 ): DeepWorkLocalDataSource {
 	override fun getDeepWorks(): Flow<List<DeepWork>> {
 		return deepWorkDao.getDeepWorks()
+	}
+
+	override fun getDeepWorksInRange(startDateTime: LocalDateTime, endDateTime: LocalDateTime): Flow<List<DeepWork>> {
+		return deepWorkDao.getDeepWorksInRange(startDateTime, endDateTime)
 	}
 
 	override suspend fun getDeepWorkById(id: Int): DeepWork? {

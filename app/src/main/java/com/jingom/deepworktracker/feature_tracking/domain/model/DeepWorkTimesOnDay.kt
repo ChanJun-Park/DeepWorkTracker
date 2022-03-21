@@ -16,7 +16,7 @@ data class DeepWorkTimesOnDay(
 			}
 		}
 
-		return DeepWorkLevel.LEVEL5
+		return DeepWorkLevel.LEVEL4
 	}
 
 	enum class DeepWorkLevel(val deepWorkTimeInHour: Int) {
@@ -24,7 +24,6 @@ data class DeepWorkTimesOnDay(
 		LEVEL1(1),
 		LEVEL2(2),
 		LEVEL3(3),
-		LEVEL4(4),
-		LEVEL5(5)
+		LEVEL4(4)
 	}
 }
