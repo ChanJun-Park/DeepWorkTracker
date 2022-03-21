@@ -1,4 +1,4 @@
-package com.jingom.deepworktracker.dependencyinjection
+package com.jingom.deepworktracker.dependencyinjection.app
 
 import android.app.Application
 import androidx.room.Room
@@ -12,6 +12,7 @@ import com.jingom.deepworktracker.feature_tracking.data.local.DeepWorkLocalDataS
 import com.jingom.deepworktracker.feature_tracking.data.local.DeepWorkLocalDataSourceImpl
 import com.jingom.deepworktracker.feature_tracking.data.repository.DeepWorkRepositoryImpl
 import com.jingom.deepworktracker.feature_tracking.domain.repository.DeepWorkRepository
+import com.jingom.deepworktracker.feature_tracking.domain.usecase.*
 import dagger.Binds
 import dagger.Module
 import dagger.Provides
@@ -72,5 +73,15 @@ abstract class AppModule {
 		@Provides
 		@Singleton
 		fun deepWorkDao(deepWorkDatabase: DeepWorkDatabase): DeepWorkDao = deepWorkDatabase.deepWorkDao
+
+		@Provides
+		@Singleton
+		fun deepWorkUseCases(deepWorkRepository: DeepWorkRepository): DeepWorkUseCases = DeepWorkUseCases(
+			addDeepWorkUseCase = AddDeepWorkUseCase(deepWorkRepository),
+			deleteDeepWorkUseCase = DeleteDeepWorkUseCase(deepWorkRepository),
+			getDeepWorkUseCase = GetDeepWorkUseCase(deepWorkRepository),
+			getDeepWorksUseCase = GetDeepWorksUseCase(deepWorkRepository),
+			getDeepWorkTimesOnDayInLastYearUseCase = GetDeepWorkTimesOnDayInLastYearUseCase(deepWorkRepository)
+		)
 	}
 }
