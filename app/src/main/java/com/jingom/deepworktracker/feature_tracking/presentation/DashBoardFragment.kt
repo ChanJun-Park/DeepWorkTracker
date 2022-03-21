@@ -22,4 +22,21 @@ class DashBoardFragment: Fragment() {
 		dashBoardViewMvx = viewMvxFactory.getDashBoardMvx(viewLifecycleOwner, container)
 		return dashBoardViewMvx.rootView
 	}
+
+	override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+		super.onViewCreated(view, savedInstanceState)
+
+		observeEvent()
+	}
+
+	private fun observeEvent() {
+		viewModel.dashBoardState.observe(viewLifecycleOwner) { dashBoardState ->
+			if (dashBoardState == null) {
+				return@observe
+			}
+
+			dashBoardViewMvx.bindDeepWorks(dashBoardState.deepWorks)
+			dashBoardViewMvx.bindDeepWorkTimesOnDayInLastYear(dashBoardState.deepWorkTimesOnDayInLastYear)
+		}
+	}
 }
