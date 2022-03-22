@@ -11,11 +11,11 @@ import javax.inject.Inject
 class GetDeepWorkTimesOnDayInLastYearUseCase @Inject constructor(
 	private val deepWorkRepository: DeepWorkRepository
 ) {
-	operator fun invoke(): Flow<Map<LocalDate, DeepWorkTimesOnDay>> {
+	operator fun invoke(): Flow<Pair<LocalDate, Map<LocalDate, DeepWorkTimesOnDay>>> {
 		val now = LocalDateTimes.now()
 
 		return deepWorkRepository.getDeepWorksInLastYear(now).map { deepWorksInLastYear ->
-			deepWorksInLastYear
+			val map = deepWorksInLastYear
 				.groupingBy { it.startDateTime.toLocalDate() }
 				.aggregate { key, accumulator: DeepWorkTimesOnDay?, element, first ->
 					if (first) {
@@ -25,6 +25,8 @@ class GetDeepWorkTimesOnDayInLastYearUseCase @Inject constructor(
 							?: DeepWorkTimesOnDay(key, element.duration)
 					}
 				}
+
+			Pair(now.toLocalDate(), map)
 		}
 	}
 }
