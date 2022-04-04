@@ -3,7 +3,7 @@ package com.jingom.deepworktracker.common.datetime
 import java.time.LocalDateTime
 
 object LocalDateTimes {
-	fun now() = LocalDateTime.now(AppClock.getClock())
+	fun now(): LocalDateTime = LocalDateTime.now(AppClock.getClock())
 }
 
 fun LocalDateTime.atFirstTimeOfDay(): LocalDateTime {
