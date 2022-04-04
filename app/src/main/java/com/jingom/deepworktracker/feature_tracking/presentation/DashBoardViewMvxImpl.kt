@@ -26,7 +26,7 @@ class DashBoardViewMvxImpl(
 		TODO("Not yet implemented")
 	}
 
-	override fun bindDeepWorkTimesOnDayInLastYear(deepWorkTimesOnDayInLastYear: Map<LocalDate, DeepWorkTimesOnDay>) {
+	override fun bindDeepWorkTimesOnDayInLastYear(lastYearDeepWorkData: LastYearDeepWorkData) {
 		TODO("Not yet implemented")
 	}
 }

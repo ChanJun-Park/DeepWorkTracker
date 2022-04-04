@@ -16,7 +16,7 @@ class DashBoardViewModel @Inject constructor(
 	private val deepWorkUseCases: DeepWorkUseCases
 ): ViewModel() {
 
-	private val _dashBoardState = MutableLiveData(DashBoardState())
+	private val _dashBoardState = MutableLiveData<DashBoardState>()
 	val dashBoardState: LiveData<DashBoardState> = _dashBoardState
 
 	private var getDeepWorksJob: Job? = null

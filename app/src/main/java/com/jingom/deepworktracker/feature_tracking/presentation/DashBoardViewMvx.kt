@@ -12,5 +12,5 @@ interface DashBoardViewMvx: ObservableViewMvx<DashBoardViewMvx.Listener> {
 
 	fun bindDeepWorks(deepWorks: List<DeepWork>)
 
-	fun bindDeepWorkTimesOnDayInLastYear(deepWorkTimesOnDayInLastYear: Map<LocalDate, DeepWorkTimesOnDay>)
+	fun bindDeepWorkTimesOnDayInLastYear(lastYearDeepWorkData: LastYearDeepWorkData)
 }
