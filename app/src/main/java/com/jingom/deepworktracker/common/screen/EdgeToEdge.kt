@@ -69,6 +69,8 @@ fun View.requestApplyInsetsWhenAttached() {
  *
  * Note that no insets will be consumed. If you need to consume insets, or need to apply some other
  * behavior, use [doOnApplyWindowInsets] directly instead.
+ *
+ * Binding 클래스가 한 번이라도 접근이 되어야 이 속성이 적용되는 이슈 확인
  */
 @BindingAdapter(
 	"paddingLeftSystemBars",
