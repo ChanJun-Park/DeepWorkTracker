@@ -1,5 +1,7 @@
 package com.jingom.deepworktracker.feature_tracking.presentation
 
+import androidx.compose.runtime.State
+import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -16,8 +18,8 @@ class DeepWorkYearRecordViewModel @Inject constructor(
 	private val deepWorkUseCases: DeepWorkUseCases
 ): ViewModel() {
 
-	private val _lastYearDeepWorkData = MutableLiveData<LastYearDeepWorkData>()
-	val lastYearDeepWorkData: LiveData<LastYearDeepWorkData> = _lastYearDeepWorkData
+	private val _lastYearDeepWorkData = mutableStateOf(LastYearDeepWorkData())
+	val lastYearDeepWorkData: State<LastYearDeepWorkData> = _lastYearDeepWorkData
 
 	private var getDeepWorkTimesOnDayInLastYear: Job? = null
 
