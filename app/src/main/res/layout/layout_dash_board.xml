@@ -1,14 +1,34 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+                name="lastYearDeepWorksData"
+                type="com.jingom.deepworktracker.feature_tracking.presentation.LastYearDeepWorkData" />
+    </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            app:paddingTopSystemBars="@{true}">
 
-        <TextView
+        <HorizontalScrollView
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:text="hello world" />
+                android:layout_height="300dp"
+                android:scrollbarSize="0dp"
+                android:padding="10dp"
+                android:clipToPadding="false"
+                app:layout_constraintTop_toTopOf="parent">
+
+
+            <com.jingom.deepworktracker.feature_tracking.presentation.ui.YearRecordView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:record="@{lastYearDeepWorksData}" />
+
+        </HorizontalScrollView>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

@@ -6,14 +6,13 @@ import androidx.lifecycle.LifecycleOwner
 import com.jingom.deepworktracker.R
 import com.jingom.deepworktracker.common.screen.views.BaseObservableViewMvx
 import com.jingom.deepworktracker.databinding.LayoutDashBoardBinding
-import com.jingom.deepworktracker.feature_tracking.domain.model.DeepWork
-import com.jingom.deepworktracker.feature_tracking.domain.model.DeepWorkTimesOnDay
-import java.time.LocalDate
 
 class DashBoardViewMvxImpl(
 	lifecycleOwner: LifecycleOwner,
 	layoutInflater: LayoutInflater,
-	parent: ViewGroup?
+	parent: ViewGroup?,
+	private val yearRecordViewModel: DeepWorkYearRecordViewModel,
+	private val deepWorksViewModel: DeepWorksViewModel
 ): BaseObservableViewMvx<DashBoardViewMvx.Listener>(
 	lifecycleOwner,
 	layoutInflater,
@@ -22,11 +21,15 @@ class DashBoardViewMvxImpl(
 ), DashBoardViewMvx {
 	private val binding: LayoutDashBoardBinding by dataBindings(LayoutDashBoardBinding::bind)
 
-	override fun bindDeepWorks(deepWorks: List<DeepWork>) {
-		TODO("Not yet implemented")
+	init {
+		observeData()
 	}
 
-	override fun bindDeepWorkTimesOnDayInLastYear(lastYearDeepWorkData: LastYearDeepWorkData) {
-		TODO("Not yet implemented")
+	private fun observeData() {
+		yearRecordViewModel.lastYearDeepWorkData.observe(lifecycleOwner) { lastYearDeepWorkData ->
+			lastYearDeepWorkData ?: return@observe
+
+			binding.lastYearDeepWorksData = lastYearDeepWorkData
+		}
 	}
 }

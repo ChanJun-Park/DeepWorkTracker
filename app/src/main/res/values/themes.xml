@@ -2,7 +2,7 @@
     <!-- Base application theme. -->
     <style name="Theme.DeepWorkTracker.DayNight" parent="Theme.DeepWorkTracker" />
 
-    <style name="Theme.DeepWorkTracker" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
+    <style name="Theme.DeepWorkTracker" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <item name="colorPrimary">@color/deepwork_gray_50</item>
         <item name="colorPrimaryVariant">@color/purple_700</item>
         <item name="colorOnPrimary">@color/white</item>

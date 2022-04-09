@@ -10,9 +10,23 @@
 
     <color name="deepwork_gray_50">#FFF6F6F6</color>
     <color name="deepwork_gray_100">#FFE9E9E9</color>
+    <color name="deepwork_gray_150">#d1d7dd</color>
     <color name="deepwork_gray_500">#FF262626</color>
     <color name="deepwork_gray_700">#FF171717</color>
     <color name="deepwork_gray_900">#FF010101</color>
     <color name="deepwork_white">#FFFCFCFC</color>
+
+    <color name="deepwork_green_50">#ebedf0</color>
+    <color name="deepwork_green_200">#aee6ae</color>
+    <color name="deepwork_green_300">#6dc06e</color>
+    <color name="deepwork_green_400">#579e57</color>
+    <color name="deepwork_green_500">#3a6c3e</color>
+
+    <color name="deepwork_year_record_container">#e8ebee</color>
+    <color name="deepwork_record_container1">#dfe1e4</color>
+    <color name="deepwork_record_container2">#a6daa6</color>
+    <color name="deepwork_record_container3">#6bbb6c</color>
+    <color name="deepwork_record_container4">#549754</color>
+    <color name="deepwork_record_container5">#396a3d</color>
 
 </resources>

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <color name="deepwork_green_50">#2e333a</color>
+    <color name="deepwork_green_200">#21432b</color>
+    <color name="deepwork_green_300">#3c7242</color>
+    <color name="deepwork_green_400">#56a34e</color>
+    <color name="deepwork_green_500">#70cf64</color>
+
+    <color name="deepwork_year_record_container">#353a41</color>
+    <color name="deepwork_record_container1">#2d3239</color>
+    <color name="deepwork_record_container2">#2b4d36</color>
+    <color name="deepwork_record_container3">#3c7242</color>
+    <color name="deepwork_record_container4">#5ea857</color>
+    <color name="deepwork_record_container5">#78d16c</color>
+</resources>

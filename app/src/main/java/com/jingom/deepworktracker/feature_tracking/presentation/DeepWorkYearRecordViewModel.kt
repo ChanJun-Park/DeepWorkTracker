@@ -12,36 +12,24 @@ import kotlinx.coroutines.flow.onEach
 import javax.inject.Inject
 
 @HiltViewModel
-class DashBoardViewModel @Inject constructor(
+class DeepWorkYearRecordViewModel @Inject constructor(
 	private val deepWorkUseCases: DeepWorkUseCases
 ): ViewModel() {
 
-	private val _dashBoardState = MutableLiveData<DashBoardState>()
-	val dashBoardState: LiveData<DashBoardState> = _dashBoardState
+	private val _lastYearDeepWorkData = MutableLiveData<LastYearDeepWorkData>()
+	val lastYearDeepWorkData: LiveData<LastYearDeepWorkData> = _lastYearDeepWorkData
 
-	private var getDeepWorksJob: Job? = null
 	private var getDeepWorkTimesOnDayInLastYear: Job? = null
 
 	init {
-		getDeepWorks()
-
 		getDeepWorkTimesOnDayInLastYear()
-	}
-
-	private fun getDeepWorks() {
-		getDeepWorksJob?.cancel()
-		getDeepWorksJob = deepWorkUseCases.getDeepWorksUseCase()
-			.onEach { deepWorks ->
-				_dashBoardState.value = dashBoardState.value?.copy(deepWorks = deepWorks)
-			}
-			.launchIn(viewModelScope)
 	}
 
 	private fun getDeepWorkTimesOnDayInLastYear() {
 		getDeepWorkTimesOnDayInLastYear?.cancel()
 		getDeepWorkTimesOnDayInLastYear = deepWorkUseCases.getDeepWorkTimesOnDayInLastYearUseCase()
 			.onEach { deepWorkTimesOnDayInLastYear ->
-				_dashBoardState.value = dashBoardState.value?.copy(deepWorkTimesOnDayInLastYear = deepWorkTimesOnDayInLastYear)
+				_lastYearDeepWorkData.value = deepWorkTimesOnDayInLastYear
 			}
 			.launchIn(viewModelScope)
 	}
