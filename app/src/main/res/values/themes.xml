@@ -3,14 +3,6 @@
     <style name="Theme.DeepWorkTracker.DayNight" parent="Theme.DeepWorkTracker" />
 
     <style name="Theme.DeepWorkTracker" parent="Theme.MaterialComponents.DayNight.NoActionBar">
-        <item name="colorPrimary">@color/deepwork_gray_50</item>
-        <item name="colorPrimaryVariant">@color/purple_700</item>
-        <item name="colorOnPrimary">@color/white</item>
-        <!-- Secondary brand color. -->
-        <item name="colorSecondary">@color/teal_200</item>
-        <item name="colorSecondaryVariant">@color/teal_700</item>
-        <item name="colorOnSecondary">@color/black</item>
-
         <!-- Customize your theme here. -->
         <item name="android:windowBackground">?attr/colorPrimary</item>
         <item name="android:statusBarColor">@android:color/transparent</item>
