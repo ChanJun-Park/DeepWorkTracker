@@ -1,16 +1,10 @@
 package com.jingom.deepworktracker.common.ui.component
 
-import androidx.compose.animation.core.Animatable
-import androidx.compose.animation.splineBasedDecay
 import androidx.compose.foundation.Canvas
-import androidx.compose.foundation.gestures.awaitFirstDown
-import androidx.compose.foundation.gestures.horizontalDrag
-import androidx.compose.foundation.gestures.scrollable
-import androidx.compose.foundation.layout.BoxWithConstraints
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.offset
-import androidx.compose.foundation.layout.padding
-import androidx.compose.runtime.*
+import androidx.compose.foundation.horizontalScroll
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.CornerRadius
 import androidx.compose.ui.geometry.Offset
@@ -18,13 +12,9 @@ import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.graphics.drawscope.Stroke
-import androidx.compose.ui.input.pointer.consumePositionChange
 import androidx.compose.ui.input.pointer.pointerInput
-import androidx.compose.ui.input.pointer.positionChange
-import androidx.compose.ui.input.pointer.util.VelocityTracker
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.unit.Dp
-import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import com.jingom.deepworktracker.R
 import com.jingom.deepworktracker.common.datetime.atStartDayOfWeek
@@ -58,14 +48,16 @@ fun YearRecord(
 	lastYearDeepWorkData: LastYearDeepWorkData,
 	yearRecordStyle: YearRecordStyle = YearRecordStyle()
 ) {
+	val scrollState = rememberScrollState()
 	BoxWithConstraints(
-		modifier = Modifier.fillMaxSize()
+		modifier = Modifier
+			.fillMaxSize()
+			.horizontalScroll(scrollState)
 	) {
 		val padding = 10.dp
 		val containerWidth = padding * 2 + yearRecordStyle.recordBlockSize * WEEK_NUMBERS_OF_YEAR + yearRecordStyle.gapBetweenBlocks * (WEEK_NUMBERS_OF_YEAR - 1)
 		val containerHeight = padding * 2 + yearRecordStyle.recordBlockSize * DAY_NUMBERS_OF_WEEK + yearRecordStyle.gapBetweenBlocks * (DAY_NUMBERS_OF_WEEK - 1)
 		val containerColor = colorResource(id = R.color.deepwork_year_record_container)
-		val offsetX = remember { Animatable(0f) }
 
 		val recordMap = lastYearDeepWorkData.deepWorkRecordMap
 		val baseDate = lastYearDeepWorkData.baseDate
@@ -110,50 +102,18 @@ fun YearRecord(
 			)
 		}
 
-
 		Canvas(
 			modifier = Modifier
 				.padding(10.dp)
-				.fillMaxSize()
+				.fillMaxHeight()
+				.width(containerWidth)
 				.pointerInput(Unit) {
-					val decay = splineBasedDecay<Float>(this)
-					val offsetXLowerBound = -(containerWidth.toPx() - size.width + 10.dp.toPx())
-					val offsetXUpperBound = 10.dp.toPx()
-
-					offsetX.snapTo(offsetXLowerBound)
-
 					coroutineScope {
-						while (true) {
-							val pointerId = awaitPointerEventScope { awaitFirstDown().id }
-							offsetX.stop()
-
-							val velocityTracker = VelocityTracker()
-							awaitPointerEventScope {
-								horizontalDrag(pointerId) { change ->
-									val horizontalDragOffset = offsetX.value + change.positionChange().x
-
-									launch {
-										offsetX.snapTo(horizontalDragOffset)
-									}
-
-									velocityTracker.addPosition(change.uptimeMillis, change.position)
-									change.consumePositionChange()
-								}
-							}
-
-							val velocity = velocityTracker.calculateVelocity().x
-							offsetX.updateBounds(
-								lowerBound = offsetXLowerBound,
-								upperBound = offsetXUpperBound
-							)
-							launch {
-								offsetX.animateDecay(velocity, decay)
-							}
+						launch {
+							val offsetXLowerBound = containerWidth.toPx() + 10.dp.toPx()
+							scrollState.scrollTo(value = offsetXLowerBound.roundToInt())
 						}
 					}
-				}
-				.offset {
-					IntOffset(x = offsetX.value.roundToInt(), y = 0)
 				}
 		) {
 			drawRoundRect(
