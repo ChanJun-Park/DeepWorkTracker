@@ -36,6 +36,7 @@ import androidx.compose.ui.unit.dp
 import com.jingom.deepworktracker.R
 import com.jingom.deepworktracker.common.datetime.atStartDayOfWeek
 import com.jingom.deepworktracker.common.datetime.isBeforeOrSame
+import com.jingom.deepworktracker.common.datetime.isFirstDayOfMonth
 import com.jingom.deepworktracker.feature_tracking.domain.model.DeepWorkTimesOnDay
 import com.jingom.deepworktracker.feature_tracking.presentation.LastYearDeepWorkData
 import kotlinx.coroutines.coroutineScope
@@ -44,6 +45,7 @@ import java.time.DayOfWeek
 import java.time.LocalDate
 import java.time.format.TextStyle
 import java.util.*
+import kotlin.math.roundToInt
 
 private const val WEEK_NUMBERS_OF_YEAR = 53
 private const val DAY_NUMBERS_OF_WEEK = 7
@@ -77,14 +79,19 @@ fun YearRecord(
 		val paddingStart = 10.dp
 		val paddingEnd = 25.dp
 		val yearRecordWidth = paddingStart + paddingEnd + yearRecordStyle.recordBlockSize * WEEK_NUMBERS_OF_YEAR + yearRecordStyle.gapBetweenBlocks * (WEEK_NUMBERS_OF_YEAR - 1)
-		val yearRecordHeight = paddingTop + paddingBottom + yearRecordStyle.recordBlockSize * DAY_NUMBERS_OF_WEEK + yearRecordStyle.gapBetweenBlocks * (DAY_NUMBERS_OF_WEEK - 1)
+		val initialYearRecordHeight = paddingTop + paddingBottom + yearRecordStyle.recordBlockSize * DAY_NUMBERS_OF_WEEK + yearRecordStyle.gapBetweenBlocks * (DAY_NUMBERS_OF_WEEK - 1)
+		var yearRecordHeight by remember {
+			mutableStateOf(initialYearRecordHeight)
+		}
+
 		val containerColor = colorResource(id = R.color.deepwork_year_record_container)
-		val offsetX = remember { Animatable(0f) }
+		val yearRecordTextColor = colorResource(id = R.color.year_record_text)
+		val yearRecordOffsetX = remember { Animatable(0f) }
 
 		val recordMap = lastYearDeepWorkData.deepWorkRecordMap
 		val baseDate = lastYearDeepWorkData.baseDate
 		var indexDate = baseDate.atStartDayOfWeek().minusWeeks(52)
-		val drawTargetColorList = mutableListOf<DayRecordData>()
+		val drawTargetDayRecordDataList = mutableListOf<DayRecordData>()
 
 		while (indexDate.isBeforeOrSame(baseDate)) {
 			val deepWorkLevel = recordMap[indexDate]?.getDeepWorkLevel() ?: DeepWorkTimesOnDay.DeepWorkLevel.LEVEL0
@@ -92,17 +99,17 @@ fun YearRecord(
 			val blockColor = colorResource(id = deepWorkLevel.colorId)
 			val blockContainerColor = colorResource(id = deepWorkLevel.containerColorId)
 
-			drawTargetColorList.add(DayRecordData(blockColor, blockContainerColor, indexDate))
+			drawTargetDayRecordDataList.add(DayRecordData(blockColor, blockContainerColor, indexDate))
 
 			indexDate = indexDate.plusDays(1)
 		}
 
-		fun DrawScope.getRecordOffset(index: Int, startOffsetX: Float): Offset {
+		fun DrawScope.getRecordOffset(index: Int, startOffsetX: Float, startOffsetY: Float): Offset {
 			val row = index % DAY_NUMBERS_OF_WEEK
 			val col = index / DAY_NUMBERS_OF_WEEK
 
-			val x = offsetX.value + startOffsetX + col * yearRecordStyle.gapBetweenBlocks.toPx() + col * yearRecordStyle.recordBlockSize.toPx()
-			val y = paddingTop.toPx() + row * yearRecordStyle.gapBetweenBlocks.toPx() + row * yearRecordStyle.recordBlockSize.toPx()
+			val x = yearRecordOffsetX.value + startOffsetX + col * yearRecordStyle.gapBetweenBlocks.toPx() + col * yearRecordStyle.recordBlockSize.toPx()
+			val y = startOffsetY + row * yearRecordStyle.gapBetweenBlocks.toPx() + row * yearRecordStyle.recordBlockSize.toPx()
 
 			return Offset(x, y)
 		}
@@ -124,7 +131,39 @@ fun YearRecord(
 			)
 		}
 
-		val yearRecordTextColor = colorResource(id = R.color.year_record_text)
+		fun DrawScope.getMonthNameTextHeight(): Int {
+			drawContext.canvas.nativeCanvas.apply {
+				val textPaint = Paint().asFrameworkPaint().apply {
+					isAntiAlias = true
+					textSize = yearRecordStyle.recordBlockSize.toPx()
+					color = yearRecordTextColor.toArgb()
+					typeface = Typeface.create(Typeface.MONOSPACE, Typeface.BOLD)
+				}
+				val fontMetrics = textPaint.fontMetrics
+
+				return (fontMetrics.descent - fontMetrics.ascent).roundToInt()
+			}
+		}
+
+		fun DrawScope.drawMonthName(date: LocalDate, offsetX: Float, monthTextHeight: Int) {
+			drawContext.canvas.nativeCanvas.apply {
+				val textPaint = Paint().asFrameworkPaint().apply {
+					isAntiAlias = true
+					textSize = yearRecordStyle.recordBlockSize.toPx()
+					color = yearRecordTextColor.toArgb()
+					typeface = Typeface.create(Typeface.MONOSPACE, Typeface.BOLD)
+				}
+				val monthName = date.month.getDisplayName(TextStyle.SHORT, Locale.getDefault())
+
+				drawText(
+					monthName,
+					offsetX,
+					paddingTop.toPx() + monthTextHeight,
+					textPaint
+				)
+			}
+		}
+
 		var offsetXLowerBound by remember {
 			mutableStateOf(0f)
 		}
@@ -137,20 +176,20 @@ fun YearRecord(
 				.pointerInput(Unit) {
 					val decay = splineBasedDecay<Float>(this)
 
-					offsetX.snapTo(offsetXLowerBound)
+					yearRecordOffsetX.snapTo(offsetXLowerBound)
 
 					coroutineScope {
 						while (true) {
 							val pointerId = awaitPointerEventScope { awaitFirstDown().id }
-							offsetX.stop()
+							yearRecordOffsetX.stop()
 
 							val velocityTracker = VelocityTracker()
 							awaitPointerEventScope {
 								horizontalDrag(pointerId) { change ->
-									val horizontalDragOffset = offsetX.value + change.positionChange().x
+									val horizontalDragOffset = yearRecordOffsetX.value + change.positionChange().x
 
 									launch {
-										offsetX.snapTo(horizontalDragOffset)
+										yearRecordOffsetX.snapTo(horizontalDragOffset)
 									}
 
 									velocityTracker.addPosition(change.uptimeMillis, change.position)
@@ -159,12 +198,12 @@ fun YearRecord(
 							}
 
 							val velocity = velocityTracker.calculateVelocity().x
-							offsetX.updateBounds(
+							yearRecordOffsetX.updateBounds(
 								lowerBound = offsetXLowerBound,
 								upperBound = offsetXUpperBound
 							)
 							launch {
-								offsetX.animateDecay(velocity, decay)
+								yearRecordOffsetX.animateDecay(velocity, decay)
 							}
 						}
 					}
@@ -178,7 +217,15 @@ fun YearRecord(
 			)
 
 			val dayTextRect = Rect()
-			var maxTextWidth = 0
+			var maxDayTextWidth = 0
+			val monthTextHeight = getMonthNameTextHeight()
+			val monthTextAreaHeight = monthTextHeight + 2 * yearRecordStyle.gapBetweenBlocks.toPx()
+			val newYearRecordHeight = initialYearRecordHeight + monthTextAreaHeight.toDp()
+			if (yearRecordHeight != newYearRecordHeight) {
+				yearRecordHeight = newYearRecordHeight
+			}
+
+			val startOffsetY = paddingTop.toPx() + monthTextAreaHeight
 
 			drawContext.canvas.nativeCanvas.apply {
 				val dayToShowList = getDayToShowList()
@@ -194,14 +241,14 @@ fun YearRecord(
 					val targetTextIndex = it.second
 
 					textPaint.getTextBounds(targetText, 0, targetText.length, dayTextRect)
-					if (maxTextWidth < dayTextRect.width()) {
-						maxTextWidth = dayTextRect.width()
+					if (maxDayTextWidth < dayTextRect.width()) {
+						maxDayTextWidth = dayTextRect.width()
 					}
 
 					drawText(
 						targetText,
 						paddingStart.toPx(),
-						paddingTop.toPx()
+						startOffsetY
 								+ yearRecordStyle.recordBlockSize.toPx() * targetTextIndex
 								+ yearRecordStyle.gapBetweenBlocks.toPx() * targetTextIndex
 								+ dayTextRect.height(),
@@ -210,11 +257,10 @@ fun YearRecord(
 				}
 			}
 
+			val dayTextAreaWidth = maxDayTextWidth + 2 * yearRecordStyle.gapBetweenBlocks.toPx()
+			val startOffsetX = paddingStart.toPx() + dayTextAreaWidth
 
-			val textAreaWidth = maxTextWidth + 2 * yearRecordStyle.gapBetweenBlocks.toPx()
-			val startOffsetX = paddingStart.toPx() + textAreaWidth
-
-			val newOffsetXLowerBound = -(yearRecordWidth.toPx() + textAreaWidth - size.width)
+			val newOffsetXLowerBound = -(yearRecordWidth.toPx() + dayTextAreaWidth - size.width)
 			if (offsetXLowerBound != newOffsetXLowerBound) {
 				offsetXLowerBound = newOffsetXLowerBound
 			}
@@ -224,10 +270,13 @@ fun YearRecord(
 				right = size.width,
 				bottom = size.height
 			) {
-				drawTargetColorList.forEachIndexed { index, yearRecordColor ->
-					val offset = getRecordOffset(index, startOffsetX)
+				drawTargetDayRecordDataList.forEachIndexed { index, dayRecordData ->
+					val offset = getRecordOffset(index, startOffsetX, startOffsetY)
+					drawSingleRecord(offset, dayRecordData)
 
-					drawSingleRecord(offset, yearRecordColor)
+					if (dayRecordData.date.isFirstDayOfMonth()) {
+						drawMonthName(dayRecordData.date, offset.x, monthTextHeight)
+					}
 				}
 			}
 		}
