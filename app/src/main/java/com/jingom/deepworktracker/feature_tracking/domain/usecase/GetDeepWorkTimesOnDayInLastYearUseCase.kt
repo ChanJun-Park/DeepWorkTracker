@@ -1,6 +1,7 @@
 package com.jingom.deepworktracker.feature_tracking.domain.usecase
 
 import com.jingom.deepworktracker.common.datetime.LocalDateTimes
+import com.jingom.deepworktracker.feature_tracking.domain.model.DeepWork
 import com.jingom.deepworktracker.feature_tracking.domain.model.DeepWorkTimesOnDay
 import com.jingom.deepworktracker.feature_tracking.domain.repository.DeepWorkRepository
 import com.jingom.deepworktracker.feature_tracking.presentation.LastYearDeepWorkData
@@ -18,7 +19,7 @@ class GetDeepWorkTimesOnDayInLastYearUseCase @Inject constructor(
 		return deepWorkRepository.getDeepWorksInLastYear(now).map { deepWorksInLastYear ->
 			val map = deepWorksInLastYear
 				.groupingBy { it.startDateTime.toLocalDate() }
-				.aggregate { key, accumulator: DeepWorkTimesOnDay?, element, first ->
+				.aggregate { key: LocalDate, accumulator: DeepWorkTimesOnDay?, element: DeepWork, first: Boolean ->
 					if (first) {
 						DeepWorkTimesOnDay(key, element.duration)
 					} else {
