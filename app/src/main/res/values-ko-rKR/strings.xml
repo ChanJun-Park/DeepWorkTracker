@@ -2,4 +2,7 @@
 <resources>
     <string name="app_name">DeepWorkTracker</string>
     <string name="start_deep_work">딥 워크 시작하기</string>
+    <string name="pause_deep_work">딥 워크 일시중지</string>
+    <string name="resume_deep_work">딥 워크 재시작</string>
+    <string name="stop_deep_work">딥 워크 종료</string>
 </resources>

@@ -9,9 +9,9 @@ class AddDeepWorkUseCase @Inject constructor(
 	private val deepWorkRepository: DeepWorkRepository
 ) {
 	suspend operator fun invoke(deepWork: DeepWork) {
-		if (deepWork.title.isBlank()) {
-			throw InvalidDeepWorkException("Deep work title must not be empty")
-		}
+//		if (deepWork.title.isBlank()) {
+//			throw InvalidDeepWorkException("Deep work title must not be empty")
+//		}
 
 		deepWorkRepository.insertDeepWork(deepWork)
 	}

@@ -1,4 +1,7 @@
 <resources>
     <string name="app_name">DeepWorkTracker</string>
     <string name="start_deep_work">Start Deep Work</string>
+    <string name="pause_deep_work">Pause Deep Work</string>
+    <string name="resume_deep_work">Resume Deep Work</string>
+    <string name="stop_deep_work">Stop Deep Work</string>
 </resources>
