@@ -4,4 +4,7 @@
     <string name="pause_deep_work">Pause Deep Work</string>
     <string name="resume_deep_work">Resume Deep Work</string>
     <string name="stop_deep_work">Stop Deep Work</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="quit_deep_work_alert_title">Do you want to quit Deep Work?</string>
 </resources>
