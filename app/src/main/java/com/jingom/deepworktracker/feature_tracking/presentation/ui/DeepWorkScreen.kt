@@ -16,9 +16,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.nativeCanvas
 import androidx.compose.ui.graphics.toArgb
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -79,21 +81,52 @@ fun DeepWorkScreen(
 				verticalAlignment = Alignment.CenterVertically,
 				horizontalArrangement = Arrangement.Center
 			) {
-				if (deepWorkState == DeepWorkState.INIT || deepWorkState == DeepWorkState.PAUSED || deepWorkState == DeepWorkState.STOPPED) {
-					DeepWorkStartButton {
-						viewModel.startDeepWork()
+				when (deepWorkState) {
+					DeepWorkState.INIT, DeepWorkState.STOPPED -> {
+						DeepWorkStateControlButton(
+							text = stringResource(id = R.string.start_deep_work),
+							style = DeepWorkStateControlButtonStyle(
+								textColor = Color.Black,
+								iconImageVector = Icons.Rounded.PlayArrow,
+								backgroundColor = Color.White,
+								borderColor = Color.White
+							),
+							onClick = viewModel::startDeepWork
+						)
 					}
-				}
-
-				if (deepWorkState == DeepWorkState.STARTED) {
-					DeepWorkPauseButton {
-						viewModel.pauseDeepWork()
+					DeepWorkState.STARTED -> {
+						DeepWorkStateControlButton(
+							text = stringResource(id = R.string.pause_deep_work),
+							style = DeepWorkStateControlButtonStyle(
+								textColor = Color.White,
+								iconImageVector = Icons.Rounded.Pause,
+								backgroundColor = Color.Transparent,
+								borderColor = Color.White
+							),
+							onClick = viewModel::pauseDeepWork
+						)
 					}
-				}
-
-				if (deepWorkState == DeepWorkState.PAUSED) {
-					DeepWorkStopButton {
-						viewModel.stopDeepWork()
+					DeepWorkState.PAUSED -> {
+						DeepWorkStateControlButton(
+							text = stringResource(id = R.string.resume_deep_work),
+							style = DeepWorkStateControlButtonStyle(
+								textColor = Color.Black,
+								iconImageVector = Icons.Rounded.PlayArrow,
+								backgroundColor = Color.White,
+								borderColor = Color.White
+							),
+							onClick = viewModel::startDeepWork
+						)
+						DeepWorkStateControlButton(
+							text = stringResource(id = R.string.stop_deep_work),
+							style = DeepWorkStateControlButtonStyle(
+								textColor = Color.White,
+								iconImageVector = Icons.Rounded.Stop,
+								backgroundColor = Color.Transparent,
+								borderColor = Color.White
+							),
+							onClick = viewModel::stopDeepWork
+						)
 					}
 				}
 			}
@@ -114,81 +147,44 @@ fun Long.toElapsedTimeText(): String {
 	return String.format("%02d:%02d:%02d", hour, minute, second)
 }
 
-@Composable
-fun DeepWorkStartButton(
-	onClick: () -> Unit
-) {
-	Row(
-		modifier = Modifier
-			.background(
-				color = Color.White,
-				shape = RoundedCornerShape(percent = 100)
-			)
-			.clickable { onClick() }
-			.padding(20.dp),
-	) {
-		Icon(
-			imageVector = Icons.Rounded.PlayArrow,
-			contentDescription = stringResource(R.string.start_deep_work)
-		)
-		Text(
-			text = stringResource(R.string.start_deep_work),
-			fontSize = 16.sp
-		)
-	}
-}
+data class DeepWorkStateControlButtonStyle(
+	val textColor: Color = Color.Black,
+	val fontSize: TextUnit = 16.sp,
+	val iconImageVector: ImageVector = Icons.Rounded.PlayArrow,
+	val backgroundColor: Color = Color.White,
+	val borderColor: Color = Color.White,
+)
 
 @Composable
-fun DeepWorkPauseButton(
-	onClick: () -> Unit
+fun DeepWorkStateControlButton(
+	modifier: Modifier = Modifier,
+	style: DeepWorkStateControlButtonStyle = DeepWorkStateControlButtonStyle(),
+	text: String = "",
+	onClick: () -> Unit = {}
 ) {
 	Row(
-		modifier = Modifier
+		modifier = modifier
 			.background(
-				color = Color.Transparent,
+				color = style.backgroundColor,
 				shape = RoundedCornerShape(percent = 100)
 			)
 			.border(
 				width = 1.dp,
-				color = Color.White,
+				color = style.borderColor,
 				shape = RoundedCornerShape(percent = 100)
 			)
 			.clickable { onClick() }
 			.padding(20.dp),
 	) {
 		Icon(
-			imageVector = Icons.Rounded.Pause,
-			contentDescription = stringResource(R.string.pause_deep_work),
-			tint = Color.White
+			imageVector = style.iconImageVector,
+			contentDescription = text,
+			tint = style.textColor
 		)
 		Text(
-			text = stringResource(R.string.pause_deep_work),
-			color = Color.White,
-			fontSize = 16.sp
-		)
-	}
-}
-
-@Composable
-fun DeepWorkStopButton(
-	onClick: () -> Unit
-) {
-	Row(
-		modifier = Modifier
-			.background(
-				color = Color.Green,
-				shape = RoundedCornerShape(percent = 100)
-			)
-			.clickable { onClick() }
-			.padding(20.dp),
-	) {
-		Icon(
-			imageVector = Icons.Rounded.Stop,
-			contentDescription = stringResource(R.string.stop_deep_work)
-		)
-		Text(
-			text = stringResource(R.string.stop_deep_work),
-			fontSize = 16.sp
+			text = text,
+			fontSize = style.fontSize,
+			color = style.textColor
 		)
 	}
 }
