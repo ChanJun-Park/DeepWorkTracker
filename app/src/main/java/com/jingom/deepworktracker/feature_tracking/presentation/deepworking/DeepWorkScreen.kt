@@ -1,6 +1,9 @@
 package com.jingom.deepworktracker.feature_tracking.presentation.deepworking
 
 import android.graphics.Paint
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.ExitTransition
+import androidx.compose.animation.fadeIn
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
@@ -8,7 +11,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Pause
 import androidx.compose.material.icons.rounded.PlayArrow
 import androidx.compose.material.icons.rounded.Stop
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -22,6 +25,7 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.jingom.deepworktracker.R
+import com.jingom.deepworktracker.common.ui.component.PositiveNegativeDialog
 import com.jingom.deepworktracker.feature_tracking.domain.model.DeepWorkState
 import com.jingom.deepworktracker.feature_tracking.presentation.deepworking.components.DeepWorkStateControlButton
 import com.jingom.deepworktracker.feature_tracking.presentation.deepworking.components.DeepWorkStateControlButtonStyle
@@ -36,8 +40,12 @@ fun DeepWorkScreen(
 	viewModel: DeepWorkScreenViewModel = hiltViewModel()
 ) {
 
-	val deepWorkTime = viewModel.deepWorkTime.value
+	val deepWorkTimeState = viewModel.deepWorkTime.value
 	val deepWorkState = viewModel.deepWorkState.value
+
+	var stopDialogVisible by remember {
+		mutableStateOf(false)
+	}
 
 	BoxWithConstraints(
 		modifier = Modifier
@@ -59,7 +67,7 @@ fun DeepWorkScreen(
 			) {
 				drawContext.canvas.nativeCanvas.apply {
 					drawText(
-						deepWorkTime.toElapsedTimeText(),
+						deepWorkTimeState.toElapsedTimeText(),
 						center.x,
 						center.y,
 						Paint().apply {
@@ -122,11 +130,28 @@ fun DeepWorkScreen(
 								backgroundColor = Color.Transparent,
 								borderColor = Color.White
 							),
-							onClick = viewModel::stopDeepWork
+							onClick = { stopDialogVisible = true }
 						)
 					}
 				}
 			}
+		}
+
+		AnimatedVisibility(
+			visible = stopDialogVisible,
+			enter = fadeIn(),
+			exit = ExitTransition.None
+		) {
+			PositiveNegativeDialog(
+				title = stringResource(id = R.string.quit_deep_work_alert_title),
+				onPositiveButtonClicked = {
+					viewModel.stopDeepWork()
+					stopDialogVisible = false
+				},
+				onNegativeButtonClicked = {
+					stopDialogVisible = false
+				}
+			)
 		}
 	}
 }
