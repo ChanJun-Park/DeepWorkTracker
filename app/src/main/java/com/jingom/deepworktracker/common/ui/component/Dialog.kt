@@ -77,7 +77,7 @@ fun PositiveNegativeDialog(
 						Text(stringResource(id = R.string.yes))
 					}
 					Button(
-						onClick = onPositiveButtonClicked,
+						onClick = onNegativeButtonClicked,
 						modifier = Modifier
 							.wrapContentWidth()
 							.padding(horizontal = 20.dp),
