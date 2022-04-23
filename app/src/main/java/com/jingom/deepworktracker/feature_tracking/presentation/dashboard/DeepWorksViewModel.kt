@@ -1,4 +1,4 @@
-package com.jingom.deepworktracker.feature_tracking.presentation
+package com.jingom.deepworktracker.feature_tracking.presentation.dashboard
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel

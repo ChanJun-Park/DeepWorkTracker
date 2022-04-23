@@ -7,14 +7,12 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsControllerCompat
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.jingom.deepworktracker.common.ui.DeepworkTrackerTheme
-import com.jingom.deepworktracker.feature_tracking.presentation.ui.DashBoardScreen
-import com.jingom.deepworktracker.feature_tracking.presentation.ui.DeepWorkScreen
+import com.jingom.deepworktracker.feature_tracking.presentation.deepworking.DeepWorkScreen
 import com.jingom.deepworktracker.feature_tracking.presentation.util.Screen
 import dagger.hilt.android.AndroidEntryPoint
 

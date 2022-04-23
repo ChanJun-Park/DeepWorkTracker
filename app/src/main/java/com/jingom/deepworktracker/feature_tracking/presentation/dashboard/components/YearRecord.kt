@@ -1,4 +1,4 @@
-package com.jingom.deepworktracker.common.ui.component
+package com.jingom.deepworktracker.feature_tracking.presentation.dashboard.components
 
 import android.graphics.Rect
 import android.graphics.Typeface
@@ -34,11 +34,11 @@ import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.jingom.deepworktracker.R
+import com.jingom.deepworktracker.common.datetime.LocalDateTimes
 import com.jingom.deepworktracker.common.datetime.atStartDayOfWeek
 import com.jingom.deepworktracker.common.datetime.isBeforeOrSame
 import com.jingom.deepworktracker.common.datetime.isFirstDayOfMonth
 import com.jingom.deepworktracker.feature_tracking.domain.model.DeepWorkTimesOnDay
-import com.jingom.deepworktracker.feature_tracking.presentation.LastYearDeepWorkData
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
 import java.time.DayOfWeek
@@ -49,6 +49,11 @@ import kotlin.math.roundToInt
 
 private const val WEEK_NUMBERS_OF_YEAR = 53
 private const val DAY_NUMBERS_OF_WEEK = 7
+
+data class LastYearDeepWorkData(
+	val baseDate: LocalDate = LocalDateTimes.now().toLocalDate(),
+	val deepWorkRecordMap: Map<LocalDate, DeepWorkTimesOnDay> = emptyMap()
+)
 
 data class DayRecordData(
 	val blockColor: Color,

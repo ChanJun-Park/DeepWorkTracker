@@ -1,4 +1,4 @@
-package com.jingom.deepworktracker.feature_tracking.presentation.ui
+package com.jingom.deepworktracker.feature_tracking.presentation.dashboard
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -9,11 +9,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
-import com.jingom.deepworktracker.common.ui.component.YearRecord
-import com.jingom.deepworktracker.feature_tracking.presentation.DeepWorkYearRecordViewModel
-import com.jingom.deepworktracker.feature_tracking.presentation.DeepWorksViewModel
+import com.jingom.deepworktracker.feature_tracking.presentation.dashboard.components.YearRecord
 
 @Composable
 fun DashBoardScreen(

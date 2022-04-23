@@ -1,12 +1,11 @@
-package com.jingom.deepworktracker.feature_tracking.presentation
+package com.jingom.deepworktracker.feature_tracking.presentation.dashboard
 
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.jingom.deepworktracker.feature_tracking.domain.usecase.DeepWorkUseCases
+import com.jingom.deepworktracker.feature_tracking.presentation.dashboard.components.LastYearDeepWorkData
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.launchIn

@@ -1,4 +1,4 @@
-package com.jingom.deepworktracker.feature_tracking.presentation
+package com.jingom.deepworktracker.feature_tracking.presentation.deepworking
 
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
@@ -81,5 +81,9 @@ class DeepWorkScreenViewModel @Inject constructor(
 		} catch (e: Exception) {
 
 		}
+	}
+
+	sealed class UiEvent {
+
 	}
 }

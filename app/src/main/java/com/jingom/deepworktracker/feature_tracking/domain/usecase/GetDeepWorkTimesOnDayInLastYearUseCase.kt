@@ -4,7 +4,7 @@ import com.jingom.deepworktracker.common.datetime.LocalDateTimes
 import com.jingom.deepworktracker.feature_tracking.domain.model.DeepWork
 import com.jingom.deepworktracker.feature_tracking.domain.model.DeepWorkTimesOnDay
 import com.jingom.deepworktracker.feature_tracking.domain.repository.DeepWorkRepository
-import com.jingom.deepworktracker.feature_tracking.presentation.LastYearDeepWorkData
+import com.jingom.deepworktracker.feature_tracking.presentation.dashboard.components.LastYearDeepWorkData
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import java.time.LocalDate

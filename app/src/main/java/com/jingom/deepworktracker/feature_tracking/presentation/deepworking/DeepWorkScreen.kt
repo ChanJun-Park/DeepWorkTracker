@@ -1,11 +1,9 @@
-package com.jingom.deepworktracker.feature_tracking.presentation.ui
+package com.jingom.deepworktracker.feature_tracking.presentation.deepworking
 
 import android.graphics.Paint
-import androidx.compose.foundation.*
+import androidx.compose.foundation.Canvas
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Icon
-import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Pause
 import androidx.compose.material.icons.rounded.PlayArrow
@@ -16,18 +14,17 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.nativeCanvas
 import androidx.compose.ui.graphics.toArgb
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.jingom.deepworktracker.R
 import com.jingom.deepworktracker.feature_tracking.domain.model.DeepWorkState
-import com.jingom.deepworktracker.feature_tracking.presentation.DeepWorkScreenViewModel
+import com.jingom.deepworktracker.feature_tracking.presentation.deepworking.components.DeepWorkStateControlButton
+import com.jingom.deepworktracker.feature_tracking.presentation.deepworking.components.DeepWorkStateControlButtonStyle
 import java.time.LocalDateTime
 import java.time.temporal.ChronoUnit
 
@@ -145,46 +142,4 @@ fun Long.toElapsedTimeText(): String {
 	val second = time
 
 	return String.format("%02d:%02d:%02d", hour, minute, second)
-}
-
-data class DeepWorkStateControlButtonStyle(
-	val textColor: Color = Color.Black,
-	val fontSize: TextUnit = 16.sp,
-	val iconImageVector: ImageVector = Icons.Rounded.PlayArrow,
-	val backgroundColor: Color = Color.White,
-	val borderColor: Color = Color.White,
-)
-
-@Composable
-fun DeepWorkStateControlButton(
-	modifier: Modifier = Modifier,
-	style: DeepWorkStateControlButtonStyle = DeepWorkStateControlButtonStyle(),
-	text: String = "",
-	onClick: () -> Unit = {}
-) {
-	Row(
-		modifier = modifier
-			.background(
-				color = style.backgroundColor,
-				shape = RoundedCornerShape(percent = 100)
-			)
-			.border(
-				width = 1.dp,
-				color = style.borderColor,
-				shape = RoundedCornerShape(percent = 100)
-			)
-			.clickable { onClick() }
-			.padding(20.dp),
-	) {
-		Icon(
-			imageVector = style.iconImageVector,
-			contentDescription = text,
-			tint = style.textColor
-		)
-		Text(
-			text = text,
-			fontSize = style.fontSize,
-			color = style.textColor
-		)
-	}
 }
