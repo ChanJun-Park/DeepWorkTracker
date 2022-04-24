@@ -4,13 +4,14 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.PlayArrow
-import androidx.compose.material.icons.rounded.PlayArrow
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.SideEffect
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.jingom.deepworktracker.R
 import com.jingom.deepworktracker.feature_tracking.presentation.dashboard.components.YearRecord
 import com.jingom.deepworktracker.feature_tracking.presentation.util.Screen
@@ -21,9 +22,25 @@ fun DashBoardScreen(
 	deepWorkYearRecordViewModel: DeepWorkYearRecordViewModel = hiltViewModel()
 ) {
 
+	// Remember a SystemUiController
+	val systemUiController = rememberSystemUiController()
+	val useDarkIcons = MaterialTheme.colors.isLight
+
+	SideEffect {
+		// Update all of the system bar colors to be transparent, and use
+		// dark icons if we're in light theme
+		systemUiController.setSystemBarsColor(
+			color = Color.Transparent,
+			darkIcons = useDarkIcons
+		)
+	}
+
 	val scaffoldState = rememberScaffoldState()
 
 	Scaffold(
+		modifier = Modifier
+			.padding(WindowInsets.statusBars.asPaddingValues())
+			.padding(WindowInsets.navigationBars.asPaddingValues()),
 		scaffoldState = scaffoldState,
 		floatingActionButton = {
 			ExtendedFloatingActionButton(
@@ -34,13 +51,18 @@ fun DashBoardScreen(
 		},
 		floatingActionButtonPosition = FabPosition.Center
 	) {
-		Box(
-			modifier = Modifier
-				.fillMaxWidth()
-				.wrapContentHeight()
+		Surface(modifier = Modifier
+			.fillMaxSize()
+			.padding(it)
 		) {
-			val lastYearDeepWorkData = deepWorkYearRecordViewModel.lastYearDeepWorkData.value
-			YearRecord(lastYearDeepWorkData)
+			Box(
+				modifier = Modifier
+					.fillMaxWidth()
+					.wrapContentHeight()
+			) {
+				val lastYearDeepWorkData = deepWorkYearRecordViewModel.lastYearDeepWorkData.value
+				YearRecord(lastYearDeepWorkData)
+			}
 		}
 	}
 }

@@ -21,10 +21,11 @@ buildscript {
         timber_version = '4.7.1'
         room_version = '2.4.2'
         coroutine_version = '1.5.2'
-        compose_version = '1.1.1'
+        compose_version = '1.2.0-alpha08'
         compose_navigation = '2.4.2'
         compose_viewmodel = '2.4.1'
         compose_hilt_navigation = '1.0.0'
+        accompanist_system_ui_controller = '0.24.7-alpha'
     }
 
     dependencies {
@@ -36,7 +37,7 @@ buildscript {
 plugins {
     id 'com.android.application' version '7.1.2' apply false
     id 'com.android.library' version '7.1.2' apply false
-    id 'org.jetbrains.kotlin.android' version '1.6.10' apply false
+    id 'org.jetbrains.kotlin.android' version '1.6.20' apply false
 }
 
 task clean(type: Delete) {

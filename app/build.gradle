@@ -69,11 +69,15 @@ dependencies {
     implementation "androidx.compose.material:material:$compose_version"
     implementation "androidx.compose.ui:ui-tooling-preview:$compose_version"
     implementation 'androidx.activity:activity-compose:1.4.0'
+    implementation "androidx.compose.foundation:foundation:$compose_version"
     // Compose dependencies
     implementation "androidx.lifecycle:lifecycle-viewmodel-compose:$compose_viewmodel"
     implementation "androidx.navigation:navigation-compose:$compose_navigation"
     implementation "androidx.compose.material:material-icons-extended:$compose_version"
     implementation "androidx.hilt:hilt-navigation-compose:$compose_hilt_navigation"
+
+    // Accompanist
+    implementation "com.google.accompanist:accompanist-systemuicontroller:$accompanist_system_ui_controller"
 
     // Compose Test
     androidTestImplementation "androidx.compose.ui:ui-test-junit4:$compose_version"

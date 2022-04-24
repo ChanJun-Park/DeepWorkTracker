@@ -7,7 +7,7 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.core.view.WindowInsetsControllerCompat
+import androidx.core.view.WindowCompat
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
@@ -23,31 +23,20 @@ class MainActivity : ComponentActivity() {
 	override fun onCreate(savedInstanceState: Bundle?) {
 		super.onCreate(savedInstanceState)
 
+		WindowCompat.setDecorFitsSystemWindows(window, false)
+
 		setContent {
 			MainActivityScreen()
 		}
-
-		initSystemUIColor()
-
-		initWindowEdgeToEdgeConfig()
-	}
-
-	private fun initSystemUIColor() {
-		WindowInsetsControllerCompat(window, window.decorView).apply {
-			isAppearanceLightStatusBars = true
-			isAppearanceLightNavigationBars = true
-		}
-	}
-
-	private fun initWindowEdgeToEdgeConfig() {
-//		WindowCompat.setDecorFitsSystemWindows(window, false)
 	}
 
 	@Preview
 	@Composable
 	fun MainActivityScreen() {
 		DeepworkTrackerTheme {
-			Surface(color = MaterialTheme.colors.background) {
+			Surface(
+				color = MaterialTheme.colors.surface
+			) {
 
 				val navController = rememberNavController()
 				NavHost(

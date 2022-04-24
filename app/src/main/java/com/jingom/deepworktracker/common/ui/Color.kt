@@ -8,7 +8,6 @@ val Purple700 = Color(0xFF3700B3)
 val Teal200 = Color(0xFF03DAC5)
 
 val DeepWorkGray50 = Color(0xFFF6F6F6)
-
 val DeepworkGray100 = Color(0xFFE9E9E9)
 val DeepworkGray150 = Color(0xffd1d7dd)
 val DeepworkGray500 = Color(0xFF262626)

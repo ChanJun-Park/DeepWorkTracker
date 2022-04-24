@@ -4,9 +4,10 @@
 
     <style name="Theme.DeepWorkTracker" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <!-- Customize your theme here. -->
-        <item name="android:windowBackground">?attr/colorPrimary</item>
-        <item name="android:statusBarColor">@android:color/transparent</item>
-        <item name="android:navigationBarColor">@android:color/transparent</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="statusBarBackground">@android:color/transparent</item>
+        <item name="android:statusBarColor" tools:targetApi="l">?attr/statusBarBackground</item>
+        <item name="android:navigationBarColor" tools:targetApi="l">@android:color/transparent</item>
 
     </style>
 </resources>

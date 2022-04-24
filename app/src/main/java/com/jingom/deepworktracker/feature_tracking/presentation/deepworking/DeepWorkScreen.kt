@@ -7,6 +7,7 @@ import androidx.compose.animation.fadeIn
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Pause
 import androidx.compose.material.icons.rounded.PlayArrow
@@ -24,6 +25,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.jingom.deepworktracker.R
 import com.jingom.deepworktracker.common.ui.component.PositiveNegativeDialog
 import com.jingom.deepworktracker.feature_tracking.domain.model.DeepWorkState
@@ -39,6 +41,18 @@ fun DeepWorkScreen(
 	navController: NavController,
 	viewModel: DeepWorkScreenViewModel = hiltViewModel()
 ) {
+
+	// Remember a SystemUiController
+	val systemUiController = rememberSystemUiController()
+
+	SideEffect {
+		// Update all of the system bar colors to be transparent, and use
+		// dark icons if we're in light theme
+		systemUiController.setSystemBarsColor(
+			color = Color.Transparent,
+			darkIcons = false
+		)
+	}
 
 	val deepWorkTimeState = viewModel.deepWorkTime.value
 	val deepWorkState = viewModel.deepWorkState.value
