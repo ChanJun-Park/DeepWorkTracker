@@ -8,4 +8,8 @@
     <string name="no">No</string>
     <string name="save">Save</string>
     <string name="quit_deep_work_alert_title">Do you want to quit Deep Work?</string>
+    <string name="deep_work_title">Deep Work Title</string>
+    <string name="start_date_time">Start</string>
+    <string name="end_date_time">End</string>
+    <string name="total_deep_work_time">Total</string>
 </resources>

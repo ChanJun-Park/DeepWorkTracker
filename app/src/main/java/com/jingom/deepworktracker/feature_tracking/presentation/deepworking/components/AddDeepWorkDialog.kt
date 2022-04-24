@@ -6,20 +6,21 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.jingom.deepworktracker.R
+import com.jingom.deepworktracker.common.datetime.format
 import com.jingom.deepworktracker.feature_tracking.presentation.deepworking.AddDeepWorkEvent
 import com.jingom.deepworktracker.feature_tracking.presentation.deepworking.DeepWorkScreenViewModel
+import java.time.temporal.ChronoUnit
 
+@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun AddDeepWorkDialog(deepWorkScreenViewModel: DeepWorkScreenViewModel = hiltViewModel()) {
 	val title = deepWorkScreenViewModel.deepWorkTitle.value
@@ -30,16 +31,19 @@ fun AddDeepWorkDialog(deepWorkScreenViewModel: DeepWorkScreenViewModel = hiltVie
 		properties = DialogProperties(
 			dismissOnBackPress = false,
 			dismissOnClickOutside = false,
+			usePlatformDefaultWidth = false
 		)
 	) {
 		Surface(
 			modifier = Modifier
-				.wrapContentSize()
-				.wrapContentHeight(),
+				.padding(10.dp)
+				.wrapContentSize(),
 			shape = RoundedCornerShape(12.dp),
 			color = Color.White
 		) {
 			Column(
+				modifier = Modifier
+					.wrapContentSize(),
 				horizontalAlignment = Alignment.CenterHorizontally
 			) {
 				Spacer(
@@ -51,8 +55,8 @@ fun AddDeepWorkDialog(deepWorkScreenViewModel: DeepWorkScreenViewModel = hiltVie
 					modifier = Modifier
 						.fillMaxWidth()
 						.wrapContentWidth()
+						.padding(horizontal = 10.dp)
 				) {
-					Text(text = "title")
 					OutlinedTextField(
 						modifier = Modifier
 							.fillMaxWidth()
@@ -62,23 +66,29 @@ fun AddDeepWorkDialog(deepWorkScreenViewModel: DeepWorkScreenViewModel = hiltVie
 						onValueChange = {
 							deepWorkScreenViewModel.onEvent(AddDeepWorkEvent.EnteredTitle(it))
 						},
+						label = {
+							Text(text = stringResource(id = R.string.deep_work_title))
+						},
+						maxLines = 3,
 					)
 				}
 
 				Row(
-					modifier = Modifier
-						.fillMaxWidth()
-						.wrapContentWidth()
+					modifier = Modifier.wrapContentSize()
 				) {
-					Text(text = "start: ${savedDeepWork.startDateTime}")
+					Text(text = "${stringResource(id = R.string.start_date_time)}: ${savedDeepWork.startDateTime.format()}")
 				}
 
 				Row(
-					modifier = Modifier
-						.fillMaxWidth()
-						.wrapContentWidth()
+					modifier = Modifier.wrapContentSize()
 				) {
-					Text(text = "end: ${savedDeepWork.startDateTime.plusSeconds(savedDeepWork.duration)}")
+					Text(text = "${stringResource(id = R.string.end_date_time)}: ${savedDeepWork.startDateTime.plusSeconds(savedDeepWork.duration).format()}")
+				}
+
+				Row(
+					modifier = Modifier.wrapContentSize()
+				) {
+					Text(text = "${stringResource(id = R.string.total_deep_work_time)}: ${savedDeepWork.duration.toHMSFormatText()}")
 				}
 
 				Spacer(
@@ -113,4 +123,30 @@ fun AddDeepWorkDialog(deepWorkScreenViewModel: DeepWorkScreenViewModel = hiltVie
 			}
 		}
 	}
+}
+
+fun Long.toHMSFormatText(): String {
+	var formattedString = ""
+	var time = this
+	val hour = time / ChronoUnit.HOURS.duration.seconds
+
+	if (hour != 0L) {
+		formattedString += "${hour}h "
+	}
+
+	time %= ChronoUnit.HOURS.duration.seconds
+	val minute = time / ChronoUnit.MINUTES.duration.seconds
+
+	if (minute != 0L) {
+		formattedString += "${minute}m "
+	}
+
+	time %= ChronoUnit.MINUTES.duration.seconds
+	val second = time
+
+	if (second != 0L) {
+		formattedString += "${second}s"
+	}
+
+	return formattedString
 }

@@ -5,6 +5,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.jingom.deepworktracker.common.datetime.LocalDateTimes
+import com.jingom.deepworktracker.common.utils.getLimitedLinesText
 import com.jingom.deepworktracker.feature_tracking.domain.model.DeepWork
 import com.jingom.deepworktracker.feature_tracking.domain.model.DeepWorkState
 import com.jingom.deepworktracker.feature_tracking.domain.usecase.AddDeepWorkUseCase
@@ -20,6 +21,11 @@ import kotlin.concurrent.timerTask
 class DeepWorkScreenViewModel @Inject constructor(
 	private val addDeepWorkUseCase: AddDeepWorkUseCase
 ) : ViewModel() {
+
+	companion object {
+		const val MAX_TITLE_LINES = 3
+		const val MAX_TITLE_CHARACTERS = 100
+	}
 
 	private val _deepWork = mutableStateOf(DeepWork())
 	val deepWork = _deepWork
@@ -93,7 +99,7 @@ class DeepWorkScreenViewModel @Inject constructor(
 
 	fun onEvent(event: AddDeepWorkEvent) {
 		when (event) {
-			is AddDeepWorkEvent.EnteredTitle -> _deepWorkTitle.value = event.value
+			is AddDeepWorkEvent.EnteredTitle -> _deepWorkTitle.value = event.value.getLimitedLinesText(MAX_TITLE_LINES).take(MAX_TITLE_CHARACTERS)
 			is AddDeepWorkEvent.SaveDeepWork -> saveDeepWork()
 		}
 	}

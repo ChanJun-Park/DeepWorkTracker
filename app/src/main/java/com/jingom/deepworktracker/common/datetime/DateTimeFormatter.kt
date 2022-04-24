@@ -9,7 +9,6 @@ import java.time.temporal.ChronoField
 object DateTimeFormatters {
 	/**
 	 * yyyy-MM-dd
-	 * - 로컬 디비에서 사용
 	 */
 	@JvmField
 	val ISO_LOCAL_DATE: DateTimeFormatter = DateTimeFormatter.ISO_LOCAL_DATE
