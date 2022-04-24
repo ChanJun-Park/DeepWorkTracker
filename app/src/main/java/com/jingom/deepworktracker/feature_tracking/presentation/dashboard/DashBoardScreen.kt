@@ -1,6 +1,9 @@
 package com.jingom.deepworktracker.feature_tracking.presentation.dashboard
 
+import androidx.compose.foundation.gestures.ScrollableDefaults
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.PlayArrow
@@ -51,17 +54,28 @@ fun DashBoardScreen(
 		},
 		floatingActionButtonPosition = FabPosition.Center
 	) {
-		Surface(modifier = Modifier
-			.fillMaxSize()
-			.padding(it)
+		Surface(
+			modifier = Modifier
+				.fillMaxSize()
+				.padding(it)
 		) {
-			Box(
+			val verticalScrollState = rememberScrollState()
+			Column(
 				modifier = Modifier
-					.fillMaxWidth()
-					.wrapContentHeight()
+					.fillMaxSize()
+					.verticalScroll(
+						state = verticalScrollState,
+						flingBehavior = ScrollableDefaults.flingBehavior()
+					)
 			) {
-				val lastYearDeepWorkData = deepWorkYearRecordViewModel.lastYearDeepWorkData.value
-				YearRecord(lastYearDeepWorkData)
+				Box(
+					modifier = Modifier
+						.fillMaxWidth()
+						.wrapContentHeight()
+				) {
+					val lastYearDeepWorkData = deepWorkYearRecordViewModel.lastYearDeepWorkData.value
+					YearRecord(lastYearDeepWorkData)
+				}
 			}
 		}
 	}
