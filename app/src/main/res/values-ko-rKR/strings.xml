@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">DeepWorkTracker</string>
+    <string name="record_deep_work">딥 워크 기록하기</string>
     <string name="start_deep_work">딥 워크 시작하기</string>
     <string name="pause_deep_work">딥 워크 일시중지</string>
     <string name="resume_deep_work">딥 워크 계속</string>
