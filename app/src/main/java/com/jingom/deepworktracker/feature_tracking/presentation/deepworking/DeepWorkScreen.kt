@@ -27,16 +27,16 @@ import androidx.navigation.NavController
 import com.jingom.deepworktracker.R
 import com.jingom.deepworktracker.common.ui.component.PositiveNegativeDialog
 import com.jingom.deepworktracker.feature_tracking.domain.model.DeepWorkState
+import com.jingom.deepworktracker.feature_tracking.presentation.deepworking.components.AddDeepWorkDialog
 import com.jingom.deepworktracker.feature_tracking.presentation.deepworking.components.DeepWorkStateControlButton
 import com.jingom.deepworktracker.feature_tracking.presentation.deepworking.components.DeepWorkStateControlButtonStyle
+import kotlinx.coroutines.flow.collectLatest
 import java.time.LocalDateTime
 import java.time.temporal.ChronoUnit
 
 @Composable
 fun DeepWorkScreen(
 	navController: NavController,
-	title: String = "",
-	startDateTime: LocalDateTime? = null,
 	viewModel: DeepWorkScreenViewModel = hiltViewModel()
 ) {
 
@@ -45,6 +45,23 @@ fun DeepWorkScreen(
 
 	var stopDialogVisible by remember {
 		mutableStateOf(false)
+	}
+
+	var addDeepWorkDialogVisible by remember {
+		mutableStateOf(false)
+	}
+
+	LaunchedEffect(key1 = true) {
+		viewModel.eventFlow.collectLatest { event ->
+			when (event) {
+				is DeepWorkScreenViewModel.UiEvent.ShowAddDeepWorkAlert -> {
+					addDeepWorkDialogVisible = true
+				}
+				is DeepWorkScreenViewModel.UiEvent.DeepWorkSaved -> {
+					navController.navigateUp()
+				}
+			}
+		}
 	}
 
 	BoxWithConstraints(
@@ -152,6 +169,14 @@ fun DeepWorkScreen(
 					stopDialogVisible = false
 				}
 			)
+		}
+
+		AnimatedVisibility(
+			visible = addDeepWorkDialogVisible,
+			enter = fadeIn(),
+			exit = ExitTransition.None
+		) {
+			AddDeepWorkDialog()
 		}
 	}
 }

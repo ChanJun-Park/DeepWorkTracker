@@ -27,7 +27,7 @@ class DeepWorkLocalDataSourceImpl @Inject constructor(
 		}
 	}
 
-	override suspend fun insertDeepWork(deepWork: DeepWork) {
+	override suspend fun insertDeepWork(deepWork: DeepWork): Int {
 		return withContext(ioDispatcher) {
 			deepWorkDao.insertDeepWork(deepWork)
 		}

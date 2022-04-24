@@ -11,7 +11,7 @@ interface DeepWorkRepository {
 
 	suspend fun getDeepWorkById(id: Int): DeepWork?
 
-	suspend fun insertDeepWork(deepWork: DeepWork)
+	suspend fun insertDeepWork(deepWork: DeepWork): Int
 
 	suspend fun deleteDeepWork(deepWork: DeepWork)
 }

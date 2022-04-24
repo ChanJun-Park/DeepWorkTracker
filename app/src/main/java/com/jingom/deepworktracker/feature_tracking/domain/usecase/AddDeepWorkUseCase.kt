@@ -8,11 +8,11 @@ import javax.inject.Inject
 class AddDeepWorkUseCase @Inject constructor(
 	private val deepWorkRepository: DeepWorkRepository
 ) {
-	suspend operator fun invoke(deepWork: DeepWork) {
+	suspend operator fun invoke(deepWork: DeepWork): Int {
 //		if (deepWork.title.isBlank()) {
 //			throw InvalidDeepWorkException("Deep work title must not be empty")
 //		}
 
-		deepWorkRepository.insertDeepWork(deepWork)
+		return deepWorkRepository.insertDeepWork(deepWork)
 	}
 }

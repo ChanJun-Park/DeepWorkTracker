@@ -29,7 +29,7 @@ class DeepWorkRepositoryImpl @Inject constructor(
 		return deepWorkLocalDataSource.getDeepWorkById(id)
 	}
 
-	override suspend fun insertDeepWork(deepWork: DeepWork) {
+	override suspend fun insertDeepWork(deepWork: DeepWork): Int {
 		return deepWorkLocalDataSource.insertDeepWork(deepWork)
 	}
 

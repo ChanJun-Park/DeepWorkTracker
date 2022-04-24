@@ -6,5 +6,6 @@
     <string name="stop_deep_work">Stop Deep Work</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
+    <string name="save">Save</string>
     <string name="quit_deep_work_alert_title">Do you want to quit Deep Work?</string>
 </resources>

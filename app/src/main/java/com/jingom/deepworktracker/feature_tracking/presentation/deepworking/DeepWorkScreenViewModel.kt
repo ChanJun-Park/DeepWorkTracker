@@ -9,7 +9,10 @@ import com.jingom.deepworktracker.feature_tracking.domain.model.DeepWork
 import com.jingom.deepworktracker.feature_tracking.domain.model.DeepWorkState
 import com.jingom.deepworktracker.feature_tracking.domain.usecase.AddDeepWorkUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.launch
+import java.time.LocalDateTime
 import java.util.*
 import javax.inject.Inject
 import kotlin.concurrent.timerTask
@@ -19,7 +22,10 @@ class DeepWorkScreenViewModel @Inject constructor(
 	private val addDeepWorkUseCase: AddDeepWorkUseCase
 ) : ViewModel() {
 
-	private var deepWork: DeepWork? = null
+	private lateinit var deepWork: DeepWork
+
+	private val _deepWorkTitle = mutableStateOf("")
+	val deepWorkTitle = _deepWorkTitle
 
 	private val _deepWorkTime = mutableStateOf(0L)
 	val deepWorkTime: State<Long> = _deepWorkTime
@@ -30,10 +36,11 @@ class DeepWorkScreenViewModel @Inject constructor(
 	private val timer = Timer()
 	private var timerTask: TimerTask? = null
 
+	private val _eventFlow = MutableSharedFlow<UiEvent>()
+	val eventFlow = _eventFlow.asSharedFlow()
+
 	fun startDeepWork() {
-		if (deepWork == null) {
-			deepWork = DeepWork()
-		}
+		deepWork = DeepWork()
 		_deepWorkState.value = DeepWorkState.STARTED
 		startTimer()
 	}
@@ -48,18 +55,19 @@ class DeepWorkScreenViewModel @Inject constructor(
 		_deepWorkState.value = DeepWorkState.STOPPED
 		saveDeepWork()
 		_deepWorkTime.value = 0
-		deepWork = null
 	}
 
 	private fun saveDeepWork() {
-		deepWork?.let {
-			viewModelScope.launch {
-				val modifiedDeepWork = it.copy(
-					duration = _deepWorkTime.value,
-					lastWorkingDateTime = LocalDateTimes.now()
-				)
-				addDeepWorkUseCase(modifiedDeepWork)
-			}
+		viewModelScope.launch {
+			val modifiedDeepWork = deepWork.copy(
+				duration = deepWorkTime.value,
+				lastWorkingDateTime = LocalDateTimes.now()
+			)
+
+			val id = addDeepWorkUseCase(modifiedDeepWork)
+			deepWork = modifiedDeepWork.copy(id = id)
+
+			_eventFlow.emit(UiEvent.ShowAddDeepWorkAlert)
 		}
 	}
 
@@ -83,7 +91,23 @@ class DeepWorkScreenViewModel @Inject constructor(
 		}
 	}
 
-	sealed class UiEvent {
+	fun onEvent(event: AddDeepWorkEvent) {
+		when (event) {
+			is AddDeepWorkEvent.EnteredTitle -> _deepWorkTitle.value = event.value
+			is AddDeepWorkEvent.SaveDeepWork -> saveDeepWork()
+		}
+	}
 
+	fun saveTitle() {
+		viewModelScope.launch {
+			val modifiedDeepWork = deepWork.copy(title = deepWorkTitle.value)
+
+			addDeepWorkUseCase(modifiedDeepWork)
+		}
+	}
+
+	sealed class UiEvent {
+		object ShowAddDeepWorkAlert : UiEvent()
+		object DeepWorkSaved : UiEvent()
 	}
 }
