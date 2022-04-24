@@ -17,7 +17,7 @@ interface DeepWorkDao {
 	suspend fun getDeepWorkById(id: Int): DeepWork?
 
 	@Insert(onConflict = OnConflictStrategy.REPLACE)
-	suspend fun insertDeepWork(deepWork: DeepWork): Int
+	suspend fun insertDeepWork(deepWork: DeepWork): Long
 
 	@Insert(onConflict = OnConflictStrategy.REPLACE)
 	suspend fun insertDeepWorks(deepWorks: List<DeepWork>)

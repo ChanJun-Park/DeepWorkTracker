@@ -23,6 +23,7 @@ import com.jingom.deepworktracker.feature_tracking.presentation.deepworking.Deep
 @Composable
 fun AddDeepWorkDialog(deepWorkScreenViewModel: DeepWorkScreenViewModel = hiltViewModel()) {
 	val title = deepWorkScreenViewModel.deepWorkTitle.value
+	val savedDeepWork = deepWorkScreenViewModel.deepWork.value
 
 	Dialog(
 		onDismissRequest = {},
@@ -46,16 +47,39 @@ fun AddDeepWorkDialog(deepWorkScreenViewModel: DeepWorkScreenViewModel = hiltVie
 						.height(12.dp)
 						.fillMaxWidth()
 				)
-				OutlinedTextField(
+				Row(
 					modifier = Modifier
 						.fillMaxWidth()
-						.wrapContentHeight()
-						.padding(vertical = 8.dp),
-					value = title,
-					onValueChange = {
-						deepWorkScreenViewModel.onEvent(AddDeepWorkEvent.EnteredTitle(it))
-					},
-				)
+						.wrapContentWidth()
+				) {
+					Text(text = "title")
+					OutlinedTextField(
+						modifier = Modifier
+							.fillMaxWidth()
+							.wrapContentHeight()
+							.padding(vertical = 8.dp),
+						value = title,
+						onValueChange = {
+							deepWorkScreenViewModel.onEvent(AddDeepWorkEvent.EnteredTitle(it))
+						},
+					)
+				}
+
+				Row(
+					modifier = Modifier
+						.fillMaxWidth()
+						.wrapContentWidth()
+				) {
+					Text(text = "start: ${savedDeepWork.startDateTime}")
+				}
+
+				Row(
+					modifier = Modifier
+						.fillMaxWidth()
+						.wrapContentWidth()
+				) {
+					Text(text = "end: ${savedDeepWork.startDateTime.plusSeconds(savedDeepWork.duration)}")
+				}
 
 				Spacer(
 					modifier = Modifier
@@ -89,10 +113,4 @@ fun AddDeepWorkDialog(deepWorkScreenViewModel: DeepWorkScreenViewModel = hiltVie
 			}
 		}
 	}
-}
-
-@Preview
-@Composable
-fun DeepWorkSaveDialogPreview() {
-	AddDeepWorkDialog()
 }

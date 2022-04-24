@@ -9,7 +9,7 @@ import java.time.LocalDateTime
 @Entity
 data class DeepWork(
 	@PrimaryKey
-	val id: Int? = null,
+	val id: Long? = null,
 	val title: String = "",
 	val startDateTime: LocalDateTime = LocalDateTimes.now(),
 	val duration: Long = 0,

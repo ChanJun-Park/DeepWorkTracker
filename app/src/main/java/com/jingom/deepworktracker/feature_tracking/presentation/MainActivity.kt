@@ -12,6 +12,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.jingom.deepworktracker.common.ui.DeepworkTrackerTheme
+import com.jingom.deepworktracker.feature_tracking.presentation.dashboard.DashBoardScreen
 import com.jingom.deepworktracker.feature_tracking.presentation.deepworking.DeepWorkScreen
 import com.jingom.deepworktracker.feature_tracking.presentation.util.Screen
 import dagger.hilt.android.AndroidEntryPoint
@@ -54,7 +55,9 @@ class MainActivity : ComponentActivity() {
 					startDestination = Screen.DashBoardScreen.route
 				) {
 					composable(route = Screen.DashBoardScreen.route) {
-//						DashBoardScreen(navController = navController)
+						DashBoardScreen(navController = navController)
+					}
+					composable(route = Screen.DeepWorkScreen.route) {
 						DeepWorkScreen(navController = navController)
 					}
 				}
