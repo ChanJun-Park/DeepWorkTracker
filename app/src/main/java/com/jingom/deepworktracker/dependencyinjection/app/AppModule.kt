@@ -77,16 +77,6 @@ abstract class AppModule {
 
 		@Provides
 		@Singleton
-		fun deepWorkUseCases(deepWorkRepository: DeepWorkRepository): DeepWorkUseCases = DeepWorkUseCases(
-			addDeepWork = AddDeepWorkUseCase(deepWorkRepository),
-			deleteDeepWork = DeleteDeepWorkUseCase(deepWorkRepository),
-			getDeepWork = GetDeepWorkUseCase(deepWorkRepository),
-			getDeepWorks = GetDeepWorksUseCase(deepWorkRepository),
-			getDeepWorkTimesOnDayInLastYear = GetDeepWorkTimesOnDayInLastYearUseCase(deepWorkRepository)
-		)
-
-		@Provides
-		@Singleton
 		@IoDispatcher
 		fun provideIoDispatcher(): CoroutineDispatcher = Dispatchers.IO
 

@@ -1,6 +1,8 @@
 package com.jingom.deepworktracker.feature_tracking.domain.usecase
 
-data class DeepWorkUseCases(
+import javax.inject.Inject
+
+data class DeepWorkUseCases @Inject constructor(
 	val addDeepWork: AddDeepWorkUseCase,
 	val deleteDeepWork: DeleteDeepWorkUseCase,
 	val getDeepWork: GetDeepWorkUseCase,
