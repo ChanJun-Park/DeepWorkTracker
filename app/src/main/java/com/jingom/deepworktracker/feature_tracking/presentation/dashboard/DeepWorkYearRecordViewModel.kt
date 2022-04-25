@@ -28,7 +28,7 @@ class DeepWorkYearRecordViewModel @Inject constructor(
 
 	private fun getDeepWorkTimesOnDayInLastYear() {
 		getDeepWorkTimesOnDayInLastYear?.cancel()
-		getDeepWorkTimesOnDayInLastYear = deepWorkUseCases.getDeepWorkTimesOnDayInLastYearUseCase()
+		getDeepWorkTimesOnDayInLastYear = deepWorkUseCases.getDeepWorkTimesOnDayInLastYear()
 			.onEach { deepWorkTimesOnDayInLastYear ->
 				_lastYearDeepWorkData.value = deepWorkTimesOnDayInLastYear
 			}

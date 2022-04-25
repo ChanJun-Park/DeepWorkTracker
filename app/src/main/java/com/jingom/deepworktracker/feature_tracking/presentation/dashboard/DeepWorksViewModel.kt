@@ -27,7 +27,7 @@ class DeepWorksViewModel @Inject constructor(
 
 	private fun getDeepWorks() {
 		getDeepWorksJob?.cancel()
-		getDeepWorksJob = deepWorkUseCases.getDeepWorksUseCase()
+		getDeepWorksJob = deepWorkUseCases.getDeepWorks()
 			.onEach { deepWorks ->
 				this.deepWorks.value = deepWorks
 			}

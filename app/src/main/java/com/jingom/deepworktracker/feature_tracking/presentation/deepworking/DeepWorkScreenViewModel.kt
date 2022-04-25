@@ -19,7 +19,7 @@ import kotlin.concurrent.timerTask
 
 @HiltViewModel
 class DeepWorkScreenViewModel @Inject constructor(
-	private val addDeepWorkUseCase: AddDeepWorkUseCase
+	private val addDeepWork: AddDeepWorkUseCase
 ) : ViewModel() {
 
 	companion object {
@@ -70,7 +70,7 @@ class DeepWorkScreenViewModel @Inject constructor(
 				lastWorkingDateTime = LocalDateTimes.now()
 			)
 
-			val id = addDeepWorkUseCase(modifiedDeepWork)
+			val id = addDeepWork(modifiedDeepWork)
 			deepWork.value = modifiedDeepWork.copy(id = id)
 
 			_eventFlow.emit(UiEvent.ShowAddDeepWorkAlert)
@@ -107,7 +107,7 @@ class DeepWorkScreenViewModel @Inject constructor(
 	fun saveTitle() {
 		viewModelScope.launch {
 			val modifiedDeepWork = deepWork.value.copy(title = deepWorkTitle.value)
-			addDeepWorkUseCase(modifiedDeepWork)
+			addDeepWork(modifiedDeepWork)
 
 			_eventFlow.emit(UiEvent.DeepWorkSaved)
 		}

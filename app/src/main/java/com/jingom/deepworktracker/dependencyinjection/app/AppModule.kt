@@ -78,11 +78,11 @@ abstract class AppModule {
 		@Provides
 		@Singleton
 		fun deepWorkUseCases(deepWorkRepository: DeepWorkRepository): DeepWorkUseCases = DeepWorkUseCases(
-			addDeepWorkUseCase = AddDeepWorkUseCase(deepWorkRepository),
-			deleteDeepWorkUseCase = DeleteDeepWorkUseCase(deepWorkRepository),
-			getDeepWorkUseCase = GetDeepWorkUseCase(deepWorkRepository),
-			getDeepWorksUseCase = GetDeepWorksUseCase(deepWorkRepository),
-			getDeepWorkTimesOnDayInLastYearUseCase = GetDeepWorkTimesOnDayInLastYearUseCase(deepWorkRepository)
+			addDeepWork = AddDeepWorkUseCase(deepWorkRepository),
+			deleteDeepWork = DeleteDeepWorkUseCase(deepWorkRepository),
+			getDeepWork = GetDeepWorkUseCase(deepWorkRepository),
+			getDeepWorks = GetDeepWorksUseCase(deepWorkRepository),
+			getDeepWorkTimesOnDayInLastYear = GetDeepWorkTimesOnDayInLastYearUseCase(deepWorkRepository)
 		)
 
 		@Provides
