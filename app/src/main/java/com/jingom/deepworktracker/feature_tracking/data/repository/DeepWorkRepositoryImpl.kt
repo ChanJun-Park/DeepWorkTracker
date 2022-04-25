@@ -18,11 +18,11 @@ class DeepWorkRepositoryImpl @Inject constructor(
 		return deepWorkLocalDataSource.getDeepWorks()
 	}
 
-	override fun getDeepWorksInLastYear(now: LocalDateTime): Flow<List<DeepWork>> {
-		val todayOneYearsAgo = now.minusYears(1).atFirstTimeOfDay()
+	override fun getDeepWorksInLastYear(baseDateTime: LocalDateTime): Flow<List<DeepWork>> {
+		val todayOneYearsAgo = baseDateTime.minusYears(1).atFirstTimeOfDay()
 		val lastSundayOneYearsAgo = todayOneYearsAgo.with(TemporalAdjusters.previousOrSame(DayOfWeek.SUNDAY))
 
-		return deepWorkLocalDataSource.getDeepWorksInRange(lastSundayOneYearsAgo, now)
+		return deepWorkLocalDataSource.getDeepWorksInRange(lastSundayOneYearsAgo, baseDateTime)
 	}
 
 	override suspend fun getDeepWorkById(id: Int): DeepWork? {

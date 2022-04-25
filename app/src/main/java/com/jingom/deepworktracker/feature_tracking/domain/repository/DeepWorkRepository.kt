@@ -7,7 +7,7 @@ import java.time.LocalDateTime
 interface DeepWorkRepository {
 	fun getDeepWorks(): Flow<List<DeepWork>>
 
-	fun getDeepWorksInLastYear(now: LocalDateTime): Flow<List<DeepWork>>
+	fun getDeepWorksInLastYear(baseDateTime: LocalDateTime): Flow<List<DeepWork>>
 
 	suspend fun getDeepWorkById(id: Int): DeepWork?
 
