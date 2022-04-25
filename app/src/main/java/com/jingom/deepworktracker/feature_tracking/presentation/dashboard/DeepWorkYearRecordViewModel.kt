@@ -5,6 +5,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.jingom.deepworktracker.feature_tracking.domain.usecase.DeepWorkUseCases
+import com.jingom.deepworktracker.feature_tracking.domain.usecase.GetDeepWorkTimesOnDayInLastYearUseCase
 import com.jingom.deepworktracker.feature_tracking.presentation.dashboard.components.LastYearDeepWorkData
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
@@ -14,21 +15,21 @@ import javax.inject.Inject
 
 @HiltViewModel
 class DeepWorkYearRecordViewModel @Inject constructor(
-	private val deepWorkUseCases: DeepWorkUseCases
+	private val getDeepWorkTimesOnDayInLastYear: GetDeepWorkTimesOnDayInLastYearUseCase
 ): ViewModel() {
 
 	private val _lastYearDeepWorkData = mutableStateOf(LastYearDeepWorkData())
 	val lastYearDeepWorkData: State<LastYearDeepWorkData> = _lastYearDeepWorkData
 
-	private var getDeepWorkTimesOnDayInLastYear: Job? = null
+	private var loadDataJob: Job? = null
 
 	init {
-		getDeepWorkTimesOnDayInLastYear()
+		loadData()
 	}
 
-	private fun getDeepWorkTimesOnDayInLastYear() {
-		getDeepWorkTimesOnDayInLastYear?.cancel()
-		getDeepWorkTimesOnDayInLastYear = deepWorkUseCases.getDeepWorkTimesOnDayInLastYear()
+	private fun loadData() {
+		loadDataJob?.cancel()
+		loadDataJob = getDeepWorkTimesOnDayInLastYear()
 			.onEach { deepWorkTimesOnDayInLastYear ->
 				_lastYearDeepWorkData.value = deepWorkTimesOnDayInLastYear
 			}
