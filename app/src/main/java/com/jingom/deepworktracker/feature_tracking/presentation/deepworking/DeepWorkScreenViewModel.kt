@@ -13,9 +13,12 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.launch
+import java.time.temporal.ChronoUnit
+import java.time.temporal.TemporalAdjusters
 import java.util.*
 import javax.inject.Inject
 import kotlin.concurrent.timerTask
+import kotlin.math.absoluteValue
 
 @HiltViewModel
 class DeepWorkScreenViewModel @Inject constructor(
@@ -80,7 +83,10 @@ class DeepWorkScreenViewModel @Inject constructor(
 	private fun startTimer() {
 		timerTask?.cancel()
 		timerTask = timerTask {
-			_deepWorkTime.value++
+			val now = LocalDateTimes.now()
+			val startTime = _deepWork.value.startDateTime
+
+			_deepWorkTime.value = ChronoUnit.SECONDS.between(now, startTime).absoluteValue
 		}
 		timer.schedule(timerTask, 1000, 1000)
 	}
