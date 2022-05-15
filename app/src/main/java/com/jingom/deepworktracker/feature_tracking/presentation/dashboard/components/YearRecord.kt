@@ -41,6 +41,7 @@ import com.jingom.deepworktracker.feature_tracking.domain.model.DeepWorkTimesOnD
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
 import java.time.DayOfWeek
+import java.time.Duration
 import java.time.LocalDate
 import java.time.format.TextStyle
 import java.util.*
@@ -52,7 +53,13 @@ private const val DAY_NUMBERS_OF_WEEK = 7
 data class LastYearDeepWorkData(
 	val baseDate: LocalDate = LocalDateTimes.now().toLocalDate(),
 	val deepWorkRecordMap: Map<LocalDate, DeepWorkTimesOnDay> = emptyMap()
-)
+) {
+	fun getTotalDeepWorkHour(): Long {
+		val totalDeepWorkTimeSum = deepWorkRecordMap.values.sumOf { it.totalDeepWorkTime }
+
+		return Duration.ofSeconds(totalDeepWorkTimeSum).toHours()
+	}
+}
 
 data class DayRecordData(
 	val blockColor: Color,

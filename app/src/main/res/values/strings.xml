@@ -13,4 +13,6 @@
     <string name="start_date_time">Start</string>
     <string name="end_date_time">End</string>
     <string name="total_deep_work_time">Total</string>
+    <string name="year_record">Year Record</string>
+    <string name="year_record_hour">%1d hours in last year</string>
 </resources>

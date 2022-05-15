@@ -12,6 +12,7 @@ import androidx.compose.runtime.SideEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
@@ -68,13 +69,38 @@ fun DashBoardScreen(
 						flingBehavior = ScrollableDefaults.flingBehavior()
 					)
 			) {
-				Box(
+				Column(
 					modifier = Modifier
-						.fillMaxWidth()
 						.wrapContentHeight()
+						.fillMaxWidth()
+						.padding(10.dp)
 				) {
-					val lastYearDeepWorkData = deepWorkYearRecordViewModel.lastYearDeepWorkData.value
-					YearRecord(lastYearDeepWorkData)
+					Column(
+						modifier = Modifier
+							.wrapContentHeight()
+							.fillMaxWidth()
+							.padding(horizontal = 10.dp)
+					) {
+						Text(
+							text = stringResource(id = R.string.year_record),
+							style = MaterialTheme.typography.h5
+						)
+
+						val totalDeepWorkHourInLastYear = deepWorkYearRecordViewModel.lastYearDeepWorkData.value.getTotalDeepWorkHour()
+						Text(
+							text = stringResource(id = R.string.year_record_hour, totalDeepWorkHourInLastYear),
+							style = MaterialTheme.typography.h6
+						)
+					}
+
+					Box(
+						modifier = Modifier
+							.fillMaxWidth()
+							.wrapContentHeight()
+					) {
+						val lastYearDeepWorkData = deepWorkYearRecordViewModel.lastYearDeepWorkData.value
+						YearRecord(lastYearDeepWorkData)
+					}
 				}
 			}
 		}
