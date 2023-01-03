@@ -38,8 +38,7 @@ fun AddDeepWorkDialog(deepWorkScreenViewModel: DeepWorkScreenViewModel = hiltVie
 			modifier = Modifier
 				.padding(10.dp)
 				.wrapContentSize(),
-			shape = RoundedCornerShape(12.dp),
-			color = Color.White
+			shape = RoundedCornerShape(12.dp)
 		) {
 			Column(
 				modifier = Modifier
@@ -103,10 +102,6 @@ fun AddDeepWorkDialog(deepWorkScreenViewModel: DeepWorkScreenViewModel = hiltVie
 						.wrapContentWidth()
 						.padding(horizontal = 20.dp),
 					shape = RoundedCornerShape(24.dp),
-					colors = ButtonDefaults.textButtonColors(
-						backgroundColor = Color.White,
-						contentColor = Color.Black
-					),
 					border = BorderStroke(
 						width = 1.dp,
 						color = Color.White

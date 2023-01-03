@@ -27,8 +27,7 @@ fun PositiveNegativeDialog(
 			modifier = Modifier
 				.wrapContentSize()
 				.wrapContentHeight(),
-			shape = RoundedCornerShape(12.dp),
-			color = Color.White
+			shape = RoundedCornerShape(12.dp)
 		) {
 			Column(
 				horizontalAlignment = Alignment.CenterHorizontally
@@ -65,10 +64,6 @@ fun PositiveNegativeDialog(
 							.wrapContentWidth()
 							.padding(horizontal = 20.dp),
 						shape = RoundedCornerShape(24.dp),
-						colors = ButtonDefaults.textButtonColors(
-							backgroundColor = Color.White,
-							contentColor = Color.Black
-						),
 						border = BorderStroke(
 							width = 1.dp,
 							color = Color.White
@@ -82,10 +77,6 @@ fun PositiveNegativeDialog(
 							.wrapContentWidth()
 							.padding(horizontal = 20.dp),
 						shape = RoundedCornerShape(24.dp),
-						colors = ButtonDefaults.textButtonColors(
-							backgroundColor = Color.Transparent,
-							contentColor = Color.White
-						),
 						border = BorderStroke(
 							width = 1.dp,
 							color = Color.White
